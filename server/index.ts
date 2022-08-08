@@ -1,10 +1,17 @@
 import express from "express";
+import cors from "cors";
+
 const app = express();
+
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+const PORT = 3003;
 
-const PORT = 3000;
-
-app.get("/ping", (_req, res) => {
+app.get("/api/ping", (_req, res) => {
   console.log("someone pinged here");
   res.send("pong");
 });
