@@ -12,10 +12,11 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
-const PORT = 3003;
 
 app.use("/api/diagnoses", diagnosesRouter);
 app.use("/api/patients", patientsRouter);
+
+const PORT = 3003;
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

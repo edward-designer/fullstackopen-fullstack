@@ -1,3 +1,9 @@
+export enum Gender {
+  Male = "male",
+  Female = "Female",
+  Other = "other",
+}
+
 export type IDiagnoses = {
   code: string;
   name: string;
@@ -9,8 +15,10 @@ export type IPatients = {
   name: string;
   dateOfBirth: string;
   ssn: string;
-  gender: string;
+  gender: Gender;
   occupation: string;
 };
 
 export type IPatientsProtected = Omit<IPatients, "ssn">;
+
+export type IPatientToAdd = Omit<IPatients, "id">;
