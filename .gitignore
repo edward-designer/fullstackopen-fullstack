@@ -1,3 +1,5 @@
 server/node_modules
 client/node_modules
 server/build
+partAB/node_modules
+partD/node_modules
