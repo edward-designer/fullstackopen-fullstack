@@ -2,11 +2,18 @@ import { v1 as uuid } from "uuid";
 
 import patientsData from "../data/patients.json";
 
-import { IPatients, IPatientsProtected, IPatientToAdd } from "../types";
+import {
+  IPatients,
+  IPatientsProtected,
+  IPatientToAdd,
+  IPatientDetails,
+} from "../types";
 
 const patients: Array<IPatients> = patientsData as Array<IPatients>;
 
-const getEntries = (): Array<IPatientsProtected> => {
+const getEntries = (): string[] => [];
+
+const getPatients = (): Array<IPatientsProtected> => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -14,6 +21,19 @@ const getEntries = (): Array<IPatientsProtected> => {
     gender,
     occupation,
   }));
+};
+const getAPatient = (requestId: string): IPatientDetails => {
+  return patients
+    .filter((patient) => patient.id === requestId)
+    .map(({ id, name, ssn, dateOfBirth, gender, occupation }) => ({
+      id,
+      name,
+      ssn,
+      dateOfBirth,
+      gender,
+      occupation,
+      entries: getEntries(),
+    }))[0];
 };
 const addPatient = (patient: IPatientToAdd): IPatients => {
   const newPatient = {
@@ -24,4 +44,4 @@ const addPatient = (patient: IPatientToAdd): IPatients => {
   return newPatient;
 };
 
-export default { getEntries, addPatient };
+export default { getPatients, getAPatient, addPatient };

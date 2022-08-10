@@ -1,22 +1,29 @@
 import React from "react";
 import axios from "axios";
-import { Box, Table, Button, TableHead, Typography } from "@material-ui/core";
+import {
+  Box,
+  Table,
+  Button,
+  TableHead,
+  Typography,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@material-ui/core";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
-import { TableCell } from "@material-ui/core";
-import { TableRow } from "@material-ui/core";
-import { TableBody } from "@material-ui/core";
+import { useStateValue, addNewPatient } from "../state";
+import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string>();
+  const [error, setError] = React.useState<string | undefined>();
 
   const openModal = (): void => setModalOpen(true);
 
@@ -31,12 +38,14 @@ const PatientListPage = () => {
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      dispatch(addNewPatient(newPatient));
       closeModal();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         console.error(e?.response?.data || "Unrecognized axios error");
-        setError(String(e?.response?.data?.error) || "Unrecognized axios error");
+        setError(
+          String(e?.response?.data?.error) || "Unrecognized axios error"
+        );
       } else {
         console.error("Unknown error", e);
         setError("Unknown error");
@@ -47,7 +56,7 @@ const PatientListPage = () => {
   return (
     <div className="App">
       <Box>
-        <Typography align="center" variant="h6">
+        <Typography align="center" variant="h4">
           Patient list
         </Typography>
       </Box>
@@ -63,7 +72,9 @@ const PatientListPage = () => {
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <TableCell>{patient.name}</TableCell>
+              <TableCell>
+                <Link to={`/patient/${patient.id}`}>{patient.name}</Link>
+              </TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
@@ -75,6 +86,7 @@ const PatientListPage = () => {
       </Table>
       <AddPatientModal
         modalOpen={modalOpen}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={submitNewPatient}
         error={error}
         onClose={closeModal}
