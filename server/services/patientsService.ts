@@ -1,6 +1,6 @@
 import { v1 as uuid } from "uuid";
 
-import patientsData from "../data/patients.json";
+import patients from "../data/patients";
 
 import {
   IPatients,
@@ -8,10 +8,6 @@ import {
   IPatientToAdd,
   IPatientDetails,
 } from "../types";
-
-const patients: Array<IPatients> = patientsData as Array<IPatients>;
-
-const getEntries = (): string[] => [];
 
 const getPatients = (): Array<IPatientsProtected> => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -25,14 +21,14 @@ const getPatients = (): Array<IPatientsProtected> => {
 const getAPatient = (requestId: string): IPatientDetails => {
   return patients
     .filter((patient) => patient.id === requestId)
-    .map(({ id, name, ssn, dateOfBirth, gender, occupation }) => ({
+    .map(({ id, name, ssn, dateOfBirth, gender, occupation, entries }) => ({
       id,
       name,
       ssn,
       dateOfBirth,
       gender,
       occupation,
-      entries: getEntries(),
+      entries,
     }))[0];
 };
 const addPatient = (patient: IPatientToAdd): IPatients => {

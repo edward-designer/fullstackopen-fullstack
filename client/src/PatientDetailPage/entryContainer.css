@@ -1,0 +1,30 @@
+.hospital,
+.occupationalHealthcare,
+.healthCheck {
+  border: 1px dotted red;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 1em;
+}
+.occupationalHealthcare {
+  border-color: blue
+}
+.healthCheck {
+  border-color: green;
+}
+.hospital:before,.occupationalHealthcare:before,.healthCheck:before {
+  display: block;
+  content: "hospital";
+  color: rgb(255, 211, 211);
+  text-align:right;
+  font-size:2em;
+  margin-top:-0.5em;
+}
+.occupationalHealthcare:before {
+  content: "Occupational Healthcare";
+  color: rgb(208, 208, 252)
+}
+.healthCheck:before {
+  content: "Health Check";
+  color: rgb(191, 232, 191)
+}

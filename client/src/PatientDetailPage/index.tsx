@@ -8,8 +8,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Button,
 } from "@material-ui/core";
 
+import PatientEntry from "./PatientEntry";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, getPatientDetails } from "../state";
 import { Patient } from "../types";
@@ -59,18 +61,42 @@ const PatientDetailPage = () => {
           </Box>
           <Table style={{ marginBottom: "1em" }}>
             <TableBody>
-              {Object.entries(patient).map((item: [string, string]) => {
-                if (item[0] !== "name" && item[0] !== "id") {
-                  return (
-                    <TableRow key={item[0]}>
-                      <TableCell>
-                        <strong>{item[0]}</strong>
-                      </TableCell>
-                      <TableCell>{item[1]}</TableCell>
-                    </TableRow>
-                  );
-                }
-              })}
+              <TableRow>
+                <TableCell>
+                  <strong>ssn</strong>
+                </TableCell>
+                <TableCell>{patient.ssn}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <strong>Date of Birth</strong>
+                </TableCell>
+                <TableCell>{patient.dateOfBirth}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <strong>Occupation</strong>
+                </TableCell>
+                <TableCell>{patient.occupation}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <strong>Gender</strong>
+                </TableCell>
+                <TableCell>{patient.gender}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <strong>Entries</strong>
+                </TableCell>
+                <TableCell>
+                  {patient.entries &&
+                    patient.entries.map((entry) => (
+                      <PatientEntry key={entry.id} entry={entry} />
+                    ))}
+                  <Button variant="contained">Add Entry</Button>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </>
