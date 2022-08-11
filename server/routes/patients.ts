@@ -1,6 +1,10 @@
 import express from "express";
 import patientsService from "../services/patientsService";
-import toNewPatientEntry from "../utils";
+import toNewPatientEntry, {
+  newEntryHospital,
+  newEntryOccupationalHealthcare,
+  newEntryHealthCheck,
+} from "../utils";
 
 const router = express.Router();
 
@@ -25,6 +29,36 @@ router.post("/", (req, res) => {
       errorMessage += " Error: " + error.message;
     }
     res.status(400).send(errorMessage);
+  }
+});
+router.post("/:id/entries", (req, res) => {
+  if (!req.body.type) {
+    res.status(400).send("Not the right entry type.");
+  }
+  const patientId = req.params.id;
+  if (!patientsService.isPatientAdded(patientId)) {
+    res.status(400).send("Patient is not in record.");
+  }
+  let newEntryToAdd;
+  let newEntry;
+  switch (req.body.type) {
+    case "Hospital":
+      newEntryToAdd = newEntryHospital(req.body);
+      newEntry = patientsService.addMedicalEntry(newEntryToAdd, patientId);
+      res.json(newEntry);
+      break;
+    case "OccupationalHealthcare":
+      newEntryToAdd = newEntryOccupationalHealthcare(req.body);
+      newEntry = patientsService.addMedicalEntry(newEntryToAdd, patientId);
+      res.json(newEntry);
+      break;
+    case "HealthCheck":
+      newEntryToAdd = newEntryHealthCheck(req.body);
+      newEntry = patientsService.addMedicalEntry(newEntryToAdd, patientId);
+      res.json(newEntry);
+      break;
+    default:
+      res.status(400).send("Not the right entry type.");
   }
 });
 

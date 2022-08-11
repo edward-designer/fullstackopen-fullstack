@@ -7,6 +7,8 @@ import {
   IPatientsProtected,
   IPatientToAdd,
   IPatientDetails,
+  EntryToAdd,
+  Entry,
 } from "../types";
 
 const getPatients = (): Array<IPatientsProtected> => {
@@ -39,5 +41,24 @@ const addPatient = (patient: IPatientToAdd): IPatients => {
   patients.push(newPatient);
   return newPatient;
 };
+const isPatientAdded = (patientID: string): boolean => {
+  return patients.some((patient) => patient.id === patientID);
+};
 
-export default { getPatients, getAPatient, addPatient };
+const addMedicalEntry = (entry: EntryToAdd, patientId: string): Entry => {
+  const newEntry = {
+    id: uuid(),
+    ...entry,
+  };
+  const thePatient = patients.filter((patient) => patient.id === patientId)[0];
+  thePatient.entries && thePatient.entries.push(newEntry);
+  return newEntry;
+};
+
+export default {
+  getPatients,
+  getAPatient,
+  addPatient,
+  addMedicalEntry,
+  isPatientAdded,
+};

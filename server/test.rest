@@ -1,0 +1,33 @@
+POST http://localhost:3003/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+{
+  "date": "2022-01-02",
+  "type": "Hospital",
+  "specialist": "MD House",
+  "diagnosisCodes": ["S62.5"],
+  "description":
+    "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+  "discharge": {
+    "date": "2022-01-16",
+    "criteria": "Great Thing."
+  }
+}
+
+###
+POST http://localhost:3003/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+{
+  "date": "2019-08-05",
+  "type": "OccupationalHealthcare",
+  "specialist": "MD House",
+  "employerName": "HyPD",
+  "diagnosisCodes": ["Z57.1", "Z74.3", "M51.2"],
+  "description":
+    "Patient mistakenly found himself in a nuclear plant waste site without protection gear. Very minor radiation poisoning.",
+  "sickLeave": {
+    "startDate": "2019-08-05",
+    "endDate": "2019-08-28"
+  }
+}
