@@ -42,14 +42,9 @@ export const newEntryHospital = ({
   return newEntry;
 };
 
-export const newEntryOccupationalHealthcare = ({
-  description,
-  date,
-  specialist,
-  diagnosisCodes,
-  employerName,
-  sickLeave: { startDate, endDate },
-}: any): EntryToAdd => {
+export const newEntryOccupationalHealthcare = (value: any): EntryToAdd => {
+  const { description, date, specialist, diagnosisCodes, employerName } = value;
+
   const newEntry: EntryToAdd = {
     date: parseDate(date),
     type: "OccupationalHealthcare",
@@ -57,8 +52,14 @@ export const newEntryOccupationalHealthcare = ({
     employerName: parseString({ employerName }),
     diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
     description: parseString({ description }),
-    sickLeave: { startDate: parseDate(startDate), endDate: parseDate(endDate) },
   };
+  if (value.sickLeave) {
+    const { startDate, endDate } = value.sickLeave;
+    newEntry.sickLeave = {
+      startDate: parseDate(startDate),
+      endDate: parseDate(endDate),
+    };
+  }
   return newEntry;
 };
 
@@ -119,6 +120,9 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 const parseDiagnosisCodes = (arr: any): string[] => {
+  if (!arr) {
+    return [];
+  }
   if (!(arr.length > 0) || !isArrOfString(arr)) {
     throw new Error(`Diagnosis Codes is formatted incorrectly`);
   }
@@ -130,11 +134,11 @@ const isArrOfString = (arr: Array<any>): arr is Array<string> => {
 };
 
 const isHealthCheckRating = (param: any): param is HealthCheckRating => {
-  return Object.values(HealthCheckRating).includes(param);
+  return Object.values(HealthCheckRating).includes(Number(param));
 };
 
 const parseHealthCheckRating = (rating: unknown): HealthCheckRating => {
-  if (!rating || !isHealthCheckRating(rating)) {
+  if (rating === "" || !isHealthCheckRating(rating)) {
     throw new Error("Incorrect or missing health check rating: " + rating);
   }
   return rating;

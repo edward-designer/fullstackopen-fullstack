@@ -66,14 +66,6 @@ const patients: IPatientDetails[] = [
     occupation: "Forensic Pathologist",
     entries: [
       {
-        id: "b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da",
-        date: "2019-10-20",
-        specialist: "MD House",
-        type: "HealthCheck",
-        description: "Yearly control visit. Cholesterol levels back to normal.",
-        healthCheckRating: 0,
-      },
-      {
         id: "fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62",
         date: "2019-09-10",
         specialist: "MD House",
@@ -89,6 +81,14 @@ const patients: IPatientDetails[] = [
         description:
           "Yearly control visit. Due to high cholesterol levels recommended to eat more vegetables.",
         healthCheckRating: 1,
+      },
+      {
+        id: "b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da",
+        date: "2016-10-20",
+        specialist: "MD House",
+        type: "HealthCheck",
+        description: "Yearly control visit. Cholesterol levels back to normal.",
+        healthCheckRating: 0,
       },
     ],
   },

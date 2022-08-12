@@ -11,14 +11,34 @@ import {
   Entry,
 } from "../types";
 
+const getHealthCheckRating = (
+  entries: Entry[] | undefined
+): number | undefined => {
+  if (entries && entries.length > 0) {
+    const allEntry = entries
+      .filter((entry) => entry.type === "HealthCheck")
+      .sort((a, b) => +new Date(b.date) - +new Date(a.date));
+    const lastEntry = allEntry[0];
+    if (lastEntry && lastEntry.type === "HealthCheck") {
+      return Number(lastEntry.healthCheckRating);
+    } else {
+      return undefined;
+    }
+  }
+  return undefined;
+};
+
 const getPatients = (): Array<IPatientsProtected> => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id,
-    name,
-    dateOfBirth,
-    gender,
-    occupation,
-  }));
+  return patients.map(
+    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+      id,
+      name,
+      dateOfBirth,
+      gender,
+      occupation,
+      healthCheckRating: getHealthCheckRating(entries),
+    })
+  );
 };
 const getAPatient = (requestId: string): IPatientDetails => {
   return patients

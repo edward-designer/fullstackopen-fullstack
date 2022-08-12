@@ -10,6 +10,12 @@ export enum Gender {
   Other = "other",
 }
 
+export enum Type {
+  Hospital = "Hospital",
+  OccupationalHealthcare = "OccupationalHealthcare",
+  HealthCheck = "HealthCheck",
+}
+
 export interface Patient {
   id: string;
   name: string;
@@ -18,6 +24,7 @@ export interface Patient {
   ssn?: string;
   dateOfBirth?: string;
   entries?: Entry[];
+  healthCheckRating?: number;
 }
 
 interface BaseEntry {
@@ -29,14 +36,14 @@ interface BaseEntry {
 }
 
 export enum HealthCheckRating {
-  "Healthy" = 0,
-  "LowRisk" = 1,
-  "HighRisk" = 2,
-  "CriticalRisk" = 3,
+  Healthy = 0,
+  LowRisk = 1,
+  HighRisk = 2,
+  CriticalRisk = 3,
 }
 
 interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
+  type: Type.Hospital;
   discharge: {
     date: string;
     criteria: string;
@@ -44,7 +51,7 @@ interface HospitalEntry extends BaseEntry {
 }
 
 interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: Type.OccupationalHealthcare;
   employerName: string;
   sickLeave?: {
     startDate: string;
@@ -53,7 +60,7 @@ interface OccupationalHealthcareEntry extends BaseEntry {
 }
 
 interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
+  type: Type.HealthCheck;
   healthCheckRating: HealthCheckRating;
 }
 
@@ -61,3 +68,10 @@ export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type EntryToAdd = UnionOmit<Entry, "id">;

@@ -78,7 +78,12 @@ const PatientListPage = () => {
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
-                <HealthRatingBar showText={false} rating={1} />
+                {typeof patient.healthCheckRating!=='undefined' && (
+                  <HealthRatingBar
+                    showText={false}
+                    rating={patient.healthCheckRating}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

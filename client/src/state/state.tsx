@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Patient } from "../types";
+import { Patient, Entry, Diagnosis } from "../types";
 import { Action } from "./reducer";
 
 export type State = {
   patients: { [id: string]: Patient };
+  diagnoses: Diagnosis[];
 };
 
 /* OR define as a Map for stricter type checking 
@@ -14,6 +15,7 @@ interface State {
 
 const initialState: State = {
   patients: {},
+  diagnoses: [],
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([
@@ -48,5 +50,15 @@ export const getPatientDetails = (payload: Patient): Action => ({
 
 export const addNewPatient = (payload: Patient): Action => ({
   type: "ADD_PATIENT",
+  payload,
+});
+
+export const addNewEntry = (payload: { id: string; entry: Entry }): Action => ({
+  type: "ADD_NEW_ENTRY",
+  payload,
+});
+
+export const setDiagnosesTypes = (payload: Diagnosis[]): Action => ({
+  type: "SET_DIAGNOSIS_TYPES",
   payload,
 });
